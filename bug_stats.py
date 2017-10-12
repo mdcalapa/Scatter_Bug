@@ -4,28 +4,19 @@ import pandas as pd
 
 output_file("bug_stats.html")
 df = pd.read_csv('test.csv')
-#source = ColumnDataSource(data=dict(
-#    x=[1, 2, 3, 4, 5],
-#    y=[2, 5, 8, 2, 7],
-#    desc=['A', 'b', 'C', 'd', 'E'],
-#))
-
+#Spectral palette
 palette = ["#5e4fa2", "#3288bd", "#66c2a5", "#abdda4", "#e6f598", "#ffffbf", "#fee08b", "#fdae61", "#f46d43", "#d53e4f", "#9e0142"]
 
-melting_points = df["HP"]
-low = min(melting_points)
-high= max(melting_points)
-melting_point_inds = [int(10.0*(x-low)/(high-low)) for x in melting_points] #gives items in colors a value from 0-10
-df["hp_colors"] = [palette[i] for i in melting_point_inds]
+hp_points = df["HP"]
+low = min(hp_points)
+high= max(hp_points)
+hp_point_inds = [int(10.0*(x-low)/(high-low)) for x in hp_points] #gives items in colors a value from 0-10
+df["hp_colors"] = [palette[i] for i in hp_point_inds]
 
 color_mapper = LinearColorMapper(palette=palette,low=low, high=high)
 
-
-#colors = [
-#    "#%02x%02x%02x" % (int(r), 150, 150) for r in zip(50+2*df["SPEED"])
-#]
-
 source = ColumnDataSource(df)
+
 hover = HoverTool(tooltips=[
     ("Name", "@NAME"),
     ("Attack", "@ATTACK"),
